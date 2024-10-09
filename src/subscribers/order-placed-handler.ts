@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types";
 import { MedusaError, Modules } from "@medusajs/framework/utils";
 import { ResendNotificationTemplates } from "../modules/resend-notification/service";
-import { processBigNumberFields } from "../modules/resend-notification/format-order";
+import { processBigNumberFields } from "../utils/format-order";
 
 /**
  * Subscribers that listen to the `order.placed` event.

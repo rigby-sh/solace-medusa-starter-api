@@ -1,4 +1,4 @@
-import { formatPrice } from "../format-order";
+import { formatPrice } from "../../../utils/format-order";
 
 interface EmailTemplateProps {
   data: any;
