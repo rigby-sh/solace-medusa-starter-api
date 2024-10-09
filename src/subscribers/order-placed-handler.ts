@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types";
 import { MedusaError, Modules } from "@medusajs/framework/utils";
 import { ResendNotificationTemplates } from "../modules/resend-notification/service";
-import { processBigNumberFields } from "../utils/format-order";
+import { processBigNumberFields } from "../modules/resend-notification/format-order";
 
 /**
  * Subscribers that listen to the `order.placed` event.
@@ -14,14 +14,14 @@ import { processBigNumberFields } from "../utils/format-order";
 export default async function orderPlacedHandler({
   event: { data },
   container,
-}: SubscriberArgs<Record<string, any>>) {
-  const orderService: IOrderModuleService = container.resolve(Modules.ORDER);
+}: SubscriberArgs<OrderDTO>) {
+  const orderModuleService: IOrderModuleService = container.resolve(
+    Modules.ORDER
+  );
   const notificationModuleService: INotificationModuleService =
     container.resolve(Modules.NOTIFICATION);
 
-  let order: OrderDTO | null = null;
-
-  order = await orderService.retrieveOrder(data.id, {
+  const order: OrderDTO = await orderModuleService.retrieveOrder(data.id, {
     relations: ["items", "shipping_methods", "shipping_address"],
     select: [
       "id",
@@ -36,7 +36,7 @@ export default async function orderPlacedHandler({
     ],
   });
 
-  order = processBigNumberFields(order);
+  const processedOrder = processBigNumberFields(order);
 
   const toEmail = order.email ?? process.env.TO_EMAIL;
   if (!toEmail) {
@@ -50,7 +50,7 @@ export default async function orderPlacedHandler({
     to: toEmail,
     channel: "email",
     template: ResendNotificationTemplates.ORDER_PLACED,
-    data: order as unknown as Record<string, unknown>,
+    data: processedOrder,
   });
 }
 

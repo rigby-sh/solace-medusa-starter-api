@@ -7,7 +7,7 @@ import {
 import { Resend } from "resend";
 
 import { validateModuleOptions } from "../../utils/validate-module-options";
-import { OrderPlacedEmailTemplate } from "../../utils/email-templates/order-placed";
+import { OrderPlacedEmailTemplate } from "./email-templates/order-placed";
 
 type ModuleOptions = {
   apiKey: string;
