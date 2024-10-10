@@ -1,8 +1,8 @@
-import { ExecArgs } from '@medusajs/framework/types';
+import { ExecArgs } from "@medusajs/framework/types";
 
 export default async function enableSearchEngine({ container }: ExecArgs) {
-  const knex = container.resolve('__pg_connection__');
-  const logger = container.resolve('logger');
+  const knex = container.resolve("__pg_connection__");
+  const logger = container.resolve("logger");
 
   /* Adding vector search column and index to product */
   await knex.raw(`
@@ -42,5 +42,5 @@ export default async function enableSearchEngine({ container }: ExecArgs) {
     USING GIN (searchable_content);
   `);
 
-  logger.info('Search engine functionality has been successfully enabled.');
+  logger.info("Search engine functionality has been successfully enabled.");
 }

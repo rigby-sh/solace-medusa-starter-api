@@ -1,5 +1,5 @@
-import ResendNotificationProviderService from './service';
+import ResendNotificationProviderService from "./service";
 
 export default {
-  services: [ResendNotificationProviderService]
+  services: [ResendNotificationProviderService],
 };

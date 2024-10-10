@@ -1,6 +1,6 @@
 // Convert BigNumber fields to strings
 export function processBigNumberFields(obj: any): any {
-  if (typeof obj !== 'object' || obj === null) {
+  if (typeof obj !== "object" || obj === null) {
     return obj;
   }
 
@@ -10,7 +10,7 @@ export function processBigNumberFields(obj: any): any {
 
   const result: any = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (typeof value === 'object' && value !== null && 'numeric_' in value) {
+    if (typeof value === "object" && value !== null && "numeric_" in value) {
       result[key] = value.numeric_;
     } else {
       result[key] = processBigNumberFields(value);
@@ -20,10 +20,10 @@ export function processBigNumberFields(obj: any): any {
 }
 
 export function formatPrice(amount: number, currencyCode: string): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
     currency: currencyCode,
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   }).format(amount);
 }

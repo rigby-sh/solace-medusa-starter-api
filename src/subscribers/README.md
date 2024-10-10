@@ -7,17 +7,19 @@ The subscriber is created in a TypeScript or JavaScript file under the `src/subs
 For example, create the file `src/subscribers/product-created.ts` with the following content:
 
 ```ts
-import { type SubscriberConfig } from '@medusajs/framework';
+import {
+  type SubscriberConfig,
+} from "@medusajs/framework"
 
 // subscriber function
 export default async function productCreateHandler() {
-  console.log('A product was created');
+  console.log("A product was created")
 }
 
 // subscriber config
 export const config: SubscriberConfig = {
-  event: 'product.created'
-};
+  event: "product.created",
+}
 ```
 
 A subscriber file must export:
@@ -33,24 +35,28 @@ A subscriber receives an object having the following properties:
 - `container`: The Medusa container. Use it to resolve modules' main services and other registered resources.
 
 ```ts
-import type { SubscriberArgs, SubscriberConfig } from '@medusajs/framework';
-import { IProductModuleService } from '@medusajs/framework/types';
-import { Modules } from '@medusajs/framework/utils';
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export default async function productCreateHandler({
   event: { data },
-  container
+  container,
 }: SubscriberArgs<{ id: string }>) {
-  const productId = data.id;
+  const productId = data.id
 
-  const productModuleService: IProductModuleService = container.resolve(Modules.PRODUCT);
+  const productModuleService: IProductModuleService =
+    container.resolve(Modules.PRODUCT)
 
-  const product = await productModuleService.retrieveProduct(productId);
+  const product = await productModuleService.retrieveProduct(productId)
 
-  console.log(`The product ${product.title} was created`);
+  console.log(`The product ${product.title} was created`)
 }
 
 export const config: SubscriberConfig = {
-  event: 'product.created'
-};
+  event: "product.created",
+}
 ```

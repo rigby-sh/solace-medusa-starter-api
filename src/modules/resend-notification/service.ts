@@ -1,10 +1,13 @@
-import { ProviderSendNotificationDTO } from '@medusajs/types';
-import { AbstractNotificationProviderService, MedusaError } from '@medusajs/utils';
+import { ProviderSendNotificationDTO } from "@medusajs/types";
+import {
+  AbstractNotificationProviderService,
+  MedusaError,
+} from "@medusajs/utils";
 
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
-import { validateModuleOptions } from '../../utils/validate-module-options';
-import { OrderPlacedEmailTemplate } from './email-templates/order-placed';
+import { validateModuleOptions } from "../../utils/validate-module-options";
+import { OrderPlacedEmailTemplate } from "./email-templates/order-placed";
 
 type ModuleOptions = {
   apiKey: string;
@@ -15,7 +18,7 @@ type ModuleOptions = {
 };
 
 export enum ResendNotificationTemplates {
-  ORDER_PLACED = 'order-placed'
+  ORDER_PLACED = "order-placed",
 }
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {
@@ -24,7 +27,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
 
   constructor(container, options: ModuleOptions) {
     super();
-    validateModuleOptions(options, 'resendNotificationProvider');
+    validateModuleOptions(options, "resendNotificationProvider");
 
     this.resend = new Resend(options.apiKey);
     this.options = options;
@@ -32,7 +35,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
 
   // Send mail
   private async sendMail(subject: string, body: any, toEmail?: string) {
-    if (this.options.enableEmails.toLowerCase() !== 'true') {
+    if (this.options.enableEmails.toLowerCase() !== "true") {
       return {};
     }
 
@@ -41,7 +44,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
       replyTo: this.options.replyToEmail,
       to: [toEmail ? toEmail : this.options.toEmail],
       subject: subject,
-      react: body
+      react: body,
     });
 
     if (error) {
@@ -56,7 +59,7 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     const orderData = { order: notification?.data };
 
     return await this.sendMail(
-      'Your order has been placed!',
+      "Your order has been placed!",
       OrderPlacedEmailTemplate({ data: orderData }),
       notification.to
     );

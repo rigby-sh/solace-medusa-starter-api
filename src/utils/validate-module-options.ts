@@ -1,4 +1,4 @@
-import { MedusaError } from '@medusajs/utils';
+import { MedusaError } from "@medusajs/utils";
 
 export const validateModuleOptions = (options, moduleName: string) => {
   for (const key in options) {
