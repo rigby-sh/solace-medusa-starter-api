@@ -74,7 +74,7 @@ module.exports = defineConfig({
     databaseUrl: process.env.DATABASE_URL,
     database_extra: { ssl: { rejectUnauthorized: false } },
     database_driver_options: {
-      connection: { ssl: { rejectUnauthorized: false } }
+      connection: { ssl: { rejectUnauthorized: false } },
     },
     http: {
       storeCors: process.env.STORE_CORS,
@@ -84,8 +84,9 @@ module.exports = defineConfig({
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
     },
     admin: {
-      disable: process.env.DISABLE_MEDUSA_ADMIN === 'true'
-    }
+      backendUrl: process.env.BACKEND_URL || "http://localhost:9000",
+      disable: process.env.DISABLE_MEDUSA_ADMIN === "true",
+    },
   },
   modules: {
     ...dynamicModules,

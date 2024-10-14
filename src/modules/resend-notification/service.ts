@@ -54,9 +54,10 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
   // Send order placed mail
   private async sendOrderPlacedMail(notification: ProviderSendNotificationDTO) {
     const orderData = { order: notification?.data };
+    const dynamicSubject = notification?.data?.subject as string;
 
     return await this.sendMail(
-      'Your order has been placed!',
+      dynamicSubject,
       OrderPlacedEmailTemplate({ data: orderData }),
       notification.to
     );

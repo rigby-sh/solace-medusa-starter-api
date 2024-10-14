@@ -42,7 +42,10 @@ export default async function orderPlacedHandler({
     to: toEmail,
     channel: 'email',
     template: ResendNotificationTemplates.ORDER_PLACED,
-    data: processedOrder
+    data: {
+      subject: `Your order #${processedOrder.display_id} has been placed!`,
+      ...processedOrder,
+    },
   });
 }
 

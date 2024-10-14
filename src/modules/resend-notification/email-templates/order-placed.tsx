@@ -248,13 +248,13 @@ export const OrderPlacedEmailTemplate: React.FC<Readonly<EmailTemplateProps>> = 
         <p>
           Do you have any questions? Write to us{' '}
           <a
-            href="mailto:solance@rigbydev.pl"
+            href="mailto:solace@rigbydev.pl"
             style={{
               color: '#6C6C6C !important',
               textDecoration: 'none !important'
             }}
           >
-            solance@rigbydev.pl
+            solace@rigbydev.pl
           </a>
         </p>
       </div>
