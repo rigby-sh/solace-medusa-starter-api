@@ -47,26 +47,26 @@ const modules = {
         }
       ]
     }
+  },
+  [Modules.NOTIFICATION]: {
+    resolve: '@medusajs/medusa/notification',
+    options: {
+      providers: [
+        {
+          resolve: './src/modules/resend-notification',
+          id: 'resend-notification',
+          options: {
+            channels: ['email'],
+            apiKey: process.env.RESEND_API_KEY,
+            fromEmail: process.env.RESEND_FROM_EMAIL,
+            replyToEmail: process.env.RESEND_REPLY_TO_EMAIL,
+            toEmail: process.env.TO_EMAIL,
+            enableEmails: process.env.ENABLE_EMAIL_NOTIFICATIONS
+          }
+        }
+      ]
+    }
   }
-  // [Modules.NOTIFICATION]: {
-  //   resolve: '@medusajs/medusa/notification',
-  //   options: {
-  //     providers: [
-  //       {
-  //         resolve: './src/modules/resend-notification',
-  //         id: 'resend-notification',
-  //         options: {
-  //           channels: ['email'],
-  //           apiKey: process.env.RESEND_API_KEY,
-  //           fromEmail: process.env.RESEND_FROM_EMAIL,
-  //           replyToEmail: process.env.RESEND_REPLY_TO_EMAIL,
-  //           toEmail: process.env.TO_EMAIL,
-  //           enableEmails: process.env.ENABLE_EMAIL_NOTIFICATIONS
-  //         }
-  //       }
-  //     ]
-  //   }
-  // }
 };
 
 module.exports = defineConfig({
