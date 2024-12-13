@@ -63,6 +63,13 @@ const modules = {
             toEmail: process.env.TO_EMAIL,
             enableEmails: process.env.ENABLE_EMAIL_NOTIFICATIONS
           }
+        },
+        {
+          resolve: '@medusajs/medusa/notification-local',
+          id: 'local',
+          options: {
+            channels: ['feed']
+          }
         }
       ]
     }
