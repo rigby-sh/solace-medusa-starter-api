@@ -4,29 +4,29 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd());
 
 const dynamicModules = {};
 
-const stripeApiKey = process.env.STRIPE_API_KEY;
-const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-const isStripeConfigured = Boolean(stripeApiKey) && Boolean(stripeWebhookSecret);
-
-if (isStripeConfigured) {
-  console.log('Stripe API key and webhook secret found. Enabling payment module');
-  dynamicModules[Modules.PAYMENT] = {
-    resolve: '@medusajs/medusa/payment',
-    options: {
-      providers: [
-        {
-          resolve: '@medusajs/medusa/payment-stripe',
-          id: 'stripe',
-          options: {
-            apiKey: stripeApiKey,
-            webhookSecret: stripeWebhookSecret
-          }
-        }
-      ]
-    }
-  };
-}
+// const stripeApiKey = process.env.STRIPE_API_KEY;
+// const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+//
+// const isStripeConfigured = Boolean(stripeApiKey) && Boolean(stripeWebhookSecret);
+//
+// if (isStripeConfigured) {
+//   console.log('Stripe API key and webhook secret found. Enabling payment module');
+//   dynamicModules[Modules.PAYMENT] = {
+//     resolve: '@medusajs/medusa/payment',
+//     options: {
+//       providers: [
+//         {
+//           resolve: '@medusajs/medusa/payment-stripe',
+//           id: 'stripe',
+//           options: {
+//             apiKey: stripeApiKey,
+//             webhookSecret: stripeWebhookSecret
+//           }
+//         }
+//       ]
+//     }
+//   };
+// }
 
 
 const modules = {
