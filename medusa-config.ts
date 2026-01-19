@@ -4,33 +4,32 @@ loadEnv(process.env.NODE_ENV || 'development', process.cwd());
 
 const dynamicModules = {};
 
-// const stripeApiKey = process.env.STRIPE_API_KEY;
-// const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-//
-// const isStripeConfigured = Boolean(stripeApiKey) && Boolean(stripeWebhookSecret);
-//
-// if (isStripeConfigured) {
-//   console.log('Stripe API key and webhook secret found. Enabling payment module');
-//   dynamicModules[Modules.PAYMENT] = {
-//     resolve: '@medusajs/medusa/payment',
-//     options: {
-//       providers: [
-//         {
-//           resolve: '@medusajs/medusa/payment-stripe',
-//           id: 'stripe',
-//           options: {
-//             apiKey: stripeApiKey,
-//             webhookSecret: stripeWebhookSecret
-//           }
-//         }
-//       ]
-//     }
-//   };
-// }
+const stripeApiKey = process.env.STRIPE_API_KEY;
+const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+const isStripeConfigured = Boolean(stripeApiKey) && Boolean(stripeWebhookSecret);
+
+if (isStripeConfigured) {
+  console.log('Stripe API key and webhook secret found. Enabling payment module');
+  dynamicModules[Modules.PAYMENT] = {
+    resolve: '@medusajs/medusa/payment',
+    options: {
+      providers: [
+        {
+          resolve: '@medusajs/medusa/payment-stripe',
+          id: 'stripe',
+          options: {
+            apiKey: stripeApiKey,
+            webhookSecret: stripeWebhookSecret
+          }
+        }
+      ]
+    }
+  };
+}
 
 
 const modules = {
-
   [Modules.FILE]: {
     resolve: '@medusajs/medusa/file',
     options: {
@@ -51,24 +50,24 @@ const modules = {
     }
   },
   [Modules.NOTIFICATION]: {
-    resolve: "@medusajs/medusa/notification",
+    resolve: '@medusajs/medusa/notification',
     options: {
       providers: [
         {
-          resolve: "./src/modules/resend",
-          id: "resend",
+          resolve: './src/modules/resend',
+          id: 'resend',
           options: {
-            channels: ["email"],
+            channels: ['email'],
             api_key: process.env.RESEND_API_KEY,
-            from: process.env.RESEND_FROM_EMAIL,
-          },
-        },
-      ],
-    },
+            from: process.env.RESEND_FROM_EMAIL
+          }
+        }
+      ]
+    }
   },
   [Modules.INDEX]: {
-    resolve: "@medusajs/index",
-  },
+    resolve: '@medusajs/index',
+  }
 };
 
 module.exports = defineConfig({
