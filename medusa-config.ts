@@ -27,7 +27,6 @@ if (isStripeConfigured) {
     }
   };
 }
-
 const modules = {
   [Modules.FILE]: {
     resolve: '@medusajs/medusa/file',
