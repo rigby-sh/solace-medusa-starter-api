@@ -11,6 +11,17 @@ ARG JWT_SECRET
 ARG COOKIE_SECRET
 ARG DISABLE_MEDUSA_ADMIN
 
+ENV DATABASE_URL=$DATABASE_URL \
+    REDIS_URL=$REDIS_URL \
+    MEDUSA_BACKEND_URL=$MEDUSA_BACKEND_URL \
+    NODE_ENV=$NODE_ENV \
+    STORE_CORS=$STORE_CORS \
+    ADMIN_CORS=$ADMIN_CORS \
+    AUTH_CORS=$AUTH_CORS \
+    JWT_SECRET=$JWT_SECRET \
+    COOKIE_SECRET=$COOKIE_SECRET \
+    DISABLE_MEDUSA_ADMIN=$DISABLE_MEDUSA_ADMIN
+
 WORKDIR /app/medusa
 
 COPY . .
@@ -19,9 +30,9 @@ RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
 
 RUN npm install -g --force corepack && corepack enable && corepack prepare yarn@3.2.3 --activate
 
-RUN yarn
+RUN yarn install --immutable
 
 RUN yarn build
 
-CMD yarn db:migrate && yarn start
+CMD yarn start
 
