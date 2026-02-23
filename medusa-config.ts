@@ -72,14 +72,7 @@ const modules = {
 module.exports = defineConfig({
   admin: {
     backendUrl: process.env.MEDUSA_BACKEND_URL,
-    disable: process.env.DISABLE_MEDUSA_ADMIN === 'true',
-		vite: () => {
-			return {
-				server: {
-					allowedHosts: ['solace-medusa-starter-api-production-f576.up.railway.app'], // replace ".medusa-server-testing.com" with ".yourdomain.com"
-				},
-			};
-		},
+    disable: process.env.DISABLE_MEDUSA_ADMIN === 'true'
   },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
