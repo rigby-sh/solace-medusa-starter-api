@@ -42,7 +42,11 @@ const modules = {
             secret_access_key: process.env.DO_SPACE_SECRET_KEY,
             region: process.env.DO_SPACE_REGION,
             bucket: process.env.DO_SPACE_BUCKET,
-            endpoint: process.env.DO_SPACE_ENDPOINT
+            endpoint: process.env.DO_SPACE_ENDPOINT,
+            // MinIO compatibility settings
+            additional_client_config: {
+              forcePathStyle: true
+            }
           }
         }
       ]
@@ -65,7 +69,7 @@ const modules = {
     }
   },
   [Modules.INDEX]: {
-    resolve: '@medusajs/index',
+    resolve: '@medusajs/index'
   }
 };
 
@@ -82,7 +86,7 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
-    },
+    }
   },
   modules: {
     ...dynamicModules,
