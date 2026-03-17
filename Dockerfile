@@ -1,3 +1,67 @@
+FROM node:22-slim AS builder
+
+ARG DATABASE_URL
+ARG REDIS_URL
+ARG MEDUSA_BACKEND_URL
+ARG NODE_ENV
+ARG STORE_CORS
+ARG ADMIN_CORS
+ARG AUTH_CORS
+ARG JWT_SECRET
+ARG COOKIE_SECRET
+ARG DISABLE_MEDUSA_ADMIN
+ARG STRIPE_API_KEY
+ARG STRIPE_WEBHOOK_SECRET
+ARG RESEND_API_KEY
+ARG RESEND_FROM_EMAIL
+ARG DO_SPACE_URL
+ARG DO_SPACE_ACCESS_KEY
+ARG DO_SPACE_SECRET_KEY
+ARG DO_SPACE_ENDPOINT
+ARG DO_SPACE_BUCKET
+ARG DO_SPACE_CDN
+ARG DO_SPACE_REGION
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3 && rm -rf /var/lib/apt/lists/*
+
+# Setup yarn via corepack
+RUN npm install -g --force corepack && corepack enable && corepack prepare yarn@3.2.3 --activate
+
+# Copy package files for better Docker layer caching
+COPY . .
+
+# Install dependencies with reproducible builds
+ENV YARN_ENABLE_GLOBAL_CACHE=false
+RUN yarn install --immutable
+
+# Set build environment variables
+ENV DATABASE_URL=$DATABASE_URL \
+    REDIS_URL=$REDIS_URL \
+    MEDUSA_BACKEND_URL=$MEDUSA_BACKEND_URL \
+    NODE_ENV=$NODE_ENV \
+    STORE_CORS=$STORE_CORS \
+    ADMIN_CORS=$ADMIN_CORS \
+    AUTH_CORS=$AUTH_CORS \
+    JWT_SECRET=$JWT_SECRET \
+    COOKIE_SECRET=$COOKIE_SECRET \
+    DISABLE_MEDUSA_ADMIN=$DISABLE_MEDUSA_ADMIN \
+    STRIPE_API_KEY=$STRIPE_API_KEY \
+    STRIPE_WEBHOOK_SECRET=$STRIPE_WEBHOOK_SECRET \
+    RESEND_API_KEY=$RESEND_API_KEY \
+    RESEND_FROM_EMAIL=$RESEND_FROM_EMAIL \
+    DO_SPACE_URL=$DO_SPACE_URL \
+    DO_SPACE_ACCESS_KEY=$DO_SPACE_ACCESS_KEY \
+    DO_SPACE_SECRET_KEY=$DO_SPACE_SECRET_KEY \
+    DO_SPACE_ENDPOINT=$DO_SPACE_ENDPOINT \
+    DO_SPACE_BUCKET=$DO_SPACE_BUCKET \
+    DO_SPACE_CDN=$DO_SPACE_CDN \
+    DO_SPACE_REGION=$DO_SPACE_REGION
+
+RUN yarn build
+
 FROM node:22-slim
 
 ARG DATABASE_URL
@@ -22,6 +86,17 @@ ARG DO_SPACE_BUCKET
 ARG DO_SPACE_CDN
 ARG DO_SPACE_REGION
 
+WORKDIR /app
+
+# Copy built application and necessary files from builder
+COPY --from=builder /app/.medusa/server ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/tsconfig.json ./tsconfig.json
+
+# Set runtime environment variables
 ENV DATABASE_URL=$DATABASE_URL \
     REDIS_URL=$REDIS_URL \
     MEDUSA_BACKEND_URL=$MEDUSA_BACKEND_URL \
@@ -44,17 +119,5 @@ ENV DATABASE_URL=$DATABASE_URL \
     DO_SPACE_CDN=$DO_SPACE_CDN \
     DO_SPACE_REGION=$DO_SPACE_REGION
 
-WORKDIR /app/medusa
-
-COPY . .
-
-RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
-
-RUN npm install -g --force corepack && corepack enable && corepack prepare yarn@3.2.3 --activate
-
-RUN yarn install --immutable
-
-RUN yarn build
-
-CMD yarn start
+CMD ["yarn", "start"]
 
