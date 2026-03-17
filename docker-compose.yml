@@ -2,7 +2,7 @@ services:
   solace-pg:
     container_name: solace-pg
     restart: unless-stopped
-    image: postgres:15-alpine
+    image: postgres:17-alpine
     environment:
       POSTGRES_USER: medusa
       POSTGRES_PASSWORD: medusa

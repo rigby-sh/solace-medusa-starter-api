@@ -1,4 +1,4 @@
-FROM node:22-slim AS builder
+FROM node:24-slim AS builder
 
 ARG DATABASE_URL
 ARG REDIS_URL
@@ -62,7 +62,7 @@ ENV DATABASE_URL=$DATABASE_URL \
 
 RUN yarn build
 
-FROM node:22-slim
+FROM node:24-slim
 
 ARG DATABASE_URL
 ARG REDIS_URL
@@ -87,6 +87,9 @@ ARG DO_SPACE_CDN
 ARG DO_SPACE_REGION
 
 WORKDIR /app
+
+# Setup yarn via corepack for runtime
+RUN npm install -g --force corepack && corepack enable && corepack prepare yarn@3.2.3 --activate
 
 # Copy built application and necessary files from builder
 COPY --from=builder /app/.medusa/server ./
