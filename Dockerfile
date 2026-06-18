@@ -6,7 +6,7 @@ COPY . .
 
 RUN apt-get update && apt-get install -y python3 python3-pip python-is-python3
 
-RUN corepack enable
+RUN npm install -g yarn
 
 RUN yarn install --frozen-lockfile
 
