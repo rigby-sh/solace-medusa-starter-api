@@ -12,5 +12,11 @@ RUN yarn install --immutable
 
 RUN yarn build
 
+# medusa build outputs the compiled app (incl. admin UI) to .medusa/server.
+# Install production deps there and run the server from that directory.
+WORKDIR /app/medusa/.medusa/server
+
+RUN yarn install
+
 CMD yarn db:migrate && yarn start
 
